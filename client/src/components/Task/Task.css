@@ -1,0 +1,27 @@
+.taskRow {
+    align-items: center;
+    position: relative;
+    box-sizing: border-box;
+    margin: 0;    
+
+}
+
+/*TASK STYLES*/
+.task {
+    display: flex;
+    width: 100%;
+}
+
+.task .taskLabelCheckbox {
+    flex: 1 0 60%;
+    margin: 0 0 0 0;
+}
+
+.task .date {
+    flex: 0 1 25%;
+    margin: 0 0 0 0;
+}
+
+
+/***CHECKBOX***/
+
