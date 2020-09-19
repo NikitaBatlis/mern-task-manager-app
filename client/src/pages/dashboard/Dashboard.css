@@ -4,7 +4,7 @@
     height: 100%;
 }
 
-/***MENU STYLES***/
+/***MENU ICON STYLES***/
 .menuWrapper button {
     background-color: white;
     text-decoration: none;
@@ -18,15 +18,22 @@
     cursor: pointer;
 }
 
-.menuWrapper .icon {
-    font-size: 25px;
-    margin: -1px 0 0 -1px;
-    color: #707070;
+/***DRAWER STYLES ***/
+.drawerBtn {
+    display: flex;
+    justify-content: center;
+}
+.drawerBtn button {
+    font-size: 18px;
+    padding: 5px;
+    margin: 10px;
+    width: 70%;
 }
 
 /*DASHBOARD*/
 .dashboardWrapper {
-    margin: 1.5em 1em 1em 1em;
+    box-sizing: border-box;
+    margin: 1em;
     padding: 0;
 }
 
@@ -77,8 +84,6 @@
     margin: -1px 0 0 -1px;
     stroke: #707070!important;
 }
-
-
 
 
 @media screen and (max-width: 999px) and (min-width: 600px) {
