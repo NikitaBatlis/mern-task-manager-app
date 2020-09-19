@@ -32,7 +32,6 @@ export default function SimpleMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Edit list</MenuItem>
         <MenuItem onClick={handleClose}>Clear completed</MenuItem>
         <MenuItem onClick={handleClose}>Delete list</MenuItem>
       </Menu>

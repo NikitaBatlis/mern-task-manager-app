@@ -9,7 +9,8 @@ import { BsArrowUp } from 'react-icons/bs';
 import { FiPlus } from 'react-icons/fi';
 //Component Import
 import Task from '../Task/Task';
-import MoreMenu from './MoreMenu.js'
+import MoreMenu from './MoreMenu.js';
+import CreateTask from './CreateTask.js';
 
 export default function TaskList() {
     return(
@@ -33,7 +34,7 @@ export default function TaskList() {
                 <Task />
 
                 <div className="btnDiv">
-                    <button className="btns orangeButton"><FiPlus/> Create a Task</button>
+                    <CreateTask />
                 </div>
             </div>
 

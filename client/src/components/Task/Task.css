@@ -26,6 +26,10 @@
     padding: 0;
 }
 
-/***MODAL***/
+/***EDIT MODAL***/
 
+.MuiDialog-paperWidthSm {
+    min-width: 35%;
+    border-radius: 15px!important;
+}
 

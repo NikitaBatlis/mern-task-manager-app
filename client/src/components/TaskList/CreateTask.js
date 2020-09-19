@@ -4,16 +4,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { orange, blueGrey } from '@material-ui/core/colors';
-
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/Edit';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
+//Others supporting imports
+import { FiPlus } from 'react-icons/fi';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
@@ -40,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EditButton() {
+export default function CreateTask() {
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -63,14 +61,12 @@ export default function EditButton() {
   return (
     <div>
       <div>
-      <ThemeProvider theme={theme}>
-
-        <IconButton aria-label="edit" className={classes.margin} onClick={handleClickOpen}>
-            <EditIcon fontSize="small" />
-        </IconButton>
-
+        
+        <button className="btns orangeButton" onClick={handleClickOpen}><FiPlus/> Create a Task</button>
+        
+        <ThemeProvider theme={theme}>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Edit Task</DialogTitle>
+        <DialogTitle id="form-dialog-title">Create a new Task</DialogTitle>
         
         <DialogContent>
         <div>
@@ -125,7 +121,6 @@ export default function EditButton() {
         </DialogActions>
       </Dialog>
       </ThemeProvider>
-
       </div>
     </div>
   );
