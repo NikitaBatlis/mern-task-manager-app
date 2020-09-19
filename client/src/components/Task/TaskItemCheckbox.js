@@ -5,7 +5,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
-const GreenCheckbox = withStyles({
+const GreyCheckbox = withStyles({
   root: {
     color: grey[400],
     '&$checked': {
@@ -17,10 +17,7 @@ const GreenCheckbox = withStyles({
 
 export default function CheckboxLabels() {
   const [state, setState] = React.useState({
-    checkedA: true,
-    checkedB: true,
-    checkedF: true,
-    checkedG: true,
+    checked: true,
   });
 
   const handleChange = (event) => {
@@ -30,7 +27,7 @@ export default function CheckboxLabels() {
   return (
     <FormGroup row>
       <FormControlLabel
-        control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
+        control={<GreyCheckbox checked={state.checked} onChange={handleChange} name="checked" />}
         label="Task Item"
       />
     </FormGroup>

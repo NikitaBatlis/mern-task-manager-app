@@ -19,7 +19,11 @@
 
 .task .date {
     flex: 0 1 25%;
-    margin: 0 0 0 0;
+    margin: 8px;
+}
+
+.task .edit .MuiIconButton-root {
+    padding: 0;
 }
 
 

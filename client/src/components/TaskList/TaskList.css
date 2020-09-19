@@ -88,13 +88,13 @@ hr {
     margin: 0.5rem 0 0.5rem 0;
 }
 
-/*Form Div*/
 
-form {
+/*Form Div*/
+.formDiv form {
     width: 100%;
 }
 
-input {
+.formDiv input {
     display: inline-flex;
     box-sizing: border-box;
     border-radius: 25px;
@@ -105,7 +105,7 @@ input {
     font-size: 16px;
 }
 
-input:focus {
+.formDiv :focus {
     outline: none;
 }
 
