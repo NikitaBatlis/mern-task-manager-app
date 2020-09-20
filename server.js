@@ -2,8 +2,8 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const cors = require('cors');
@@ -20,7 +20,10 @@ app.use(cookieParser());
 app.use(cookieSession({ maxAge: 24 * 60 *60 * 1000, keys: [keys.session.cookieKey]}));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 app.use(helmet());
 
 //Import ROUTES

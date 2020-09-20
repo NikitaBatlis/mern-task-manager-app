@@ -11,14 +11,15 @@ const UserSchema = mongoose.Schema({
     },
     email: {
         type: String,
-        unique: true,
-        lowercase: true
+        lowercase: true,
+        required: true
+    },
+    type: {
+        type: String,
+        required: true
     },
     password: {
         type: String,
-    },
-    picture: {
-        type: String
     },
     todos: [{
         type: Schema.Types.ObjectId,
@@ -26,7 +27,7 @@ const UserSchema = mongoose.Schema({
     }]
 }, { timestamps: true });
 
-
+UserSchema.index({email: 1, type: 1}, {unique: true});
 
 let User = mongoose.model('users', UserSchema);
 

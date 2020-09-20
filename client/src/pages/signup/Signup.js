@@ -1,28 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
 import '../../App.css';
 import './Signup.css';
-import { IconContext } from "react-icons";
-import { FaFacebook } from 'react-icons/fa';
-import { FcGoogle } from 'react-icons/fc';
+import axios from 'axios';
 
 export default function Signup() {
+
+    const [registerUsername, setRegisterUsername] = useState('');
+    const [registerEmail, setRegisterEmail] = useState('');
+    const [registerPassword, setRegisterPassword] = useState('');
+    const history = useHistory();
+
+
+    const register = () => {
+        axios.post(`http://localhost:3001/api/signup`, {
+            username: registerUsername,
+            email: registerEmail,
+            password: registerPassword
+        }, {
+            withCredentials: true
+        }).then(res => {
+            history.push('/login');
+        });
+    };
 
     return(
       <div className ="signupWrapper">
           <div className="signupContainer">
             <div className="signupHeader"><h1>Create Account</h1></div>
-            <form className="signupForm" >
-                <input type="email" id="email" placeholder="Email"></input> <br/>
-                <input type="password" id="password" placeholder="Password"></input> <br/>
-                <a href="http://localhost:3001/api/signup"><button className="signupbtns orangeButton">Register</button></a>
-            </form>
-            <div className="signupSubtext"><p>or</p></div>
-            <IconContext.Provider value={{ className: 'react-icons' }}>
-                <div className="signupSocialBtns">
-                    <a href="http://localhost:3001/api/signup/local"><button className="signupbtns facebookButton"><FaFacebook/>Register with Facebook</button></a> <br/>
-                    <a href="http://localhost:3001/api/signup/local"><button className="signupbtns googleButton"><FcGoogle/>Register with Google</button></a>
-                </div>
-            </IconContext.Provider>
+            <div className="signupForm" >
+                <input type="text" id="username" placeholder="Username" onChange={(e) => setRegisterUsername(e.target.value)}></input> <br/>
+                <input type="email" id="email" placeholder="Email" onChange={(e) => setRegisterEmail(e.target.value)}></input> <br/>
+                <input type="password" id="password" placeholder="Password" onChange={(e) => setRegisterPassword(e.target.value)}></input> <br/>
+                <button className="signupbtns orangeButton" onClick={register}>Register</button>
+            </div>
         </div>
       </div>
     )

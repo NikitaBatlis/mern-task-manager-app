@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Switch, Route} from "react-router-dom";
 //Imports styles
 import './App.css';
@@ -9,6 +9,15 @@ import Signup from './pages/signup/Signup.js';
 import Dashboard from './pages/dashboard/Dashboard.js';
 
 export default function App() {
+  useEffect(() => {
+    checkFacebookKek();
+  }, []);
+
+  function checkFacebookKek() {
+    if (window.location.hash && window.location.hash === '#_=_') {
+      window.location.replace(window.location.href.split('%')[0]);
+    }
+  }
 
   return (
     <div className= "routerWrapper">
