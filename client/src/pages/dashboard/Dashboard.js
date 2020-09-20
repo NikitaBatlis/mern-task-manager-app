@@ -24,6 +24,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 //Components Import
 import TaskListContainer from '../../components/TaskListContainer/TaskListContainer.js'
 
+//STYLES
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -82,9 +83,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+//FUNCTIONS
+export default function Dashboard() {
 
-export default function PersistentDrawerLeft() {
-
+  //UI FUNCTIONS
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -96,6 +98,10 @@ export default function PersistentDrawerLeft() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+ 
+  //CRUD FUNCTIONS
+
+
 
     return (
       <div className="parentWrapper">
@@ -110,7 +116,7 @@ export default function PersistentDrawerLeft() {
                             onClick={handleDrawerOpen}
                             edge="start"
                             className={clsx(classes.menuButton, open && classes.hide)}
-                        >
+                          >
                             <MenuIcon />
                         </IconButton>
                     </Col>
