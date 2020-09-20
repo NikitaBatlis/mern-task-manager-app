@@ -1,10 +1,15 @@
 import React from 'react';
+//Material UI
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-export default function SimpleMenu() {
+
+export default function MoreMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -23,7 +28,7 @@ export default function SimpleMenu() {
                 aria-haspopup="true"
                 onClick={handleClick}
             >
-                <MoreVertIcon />
+            <MoreVertIcon />
         </IconButton>
       <Menu
         id="simple-menu"
@@ -32,9 +37,12 @@ export default function SimpleMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Edit list</MenuItem>
-        <MenuItem onClick={handleClose}>Clear completed</MenuItem>
-        <MenuItem onClick={handleClose}>Delete list</MenuItem>
+      <MenuItem onClick={handleClose}>
+        <ListItemIcon>
+          <DeleteIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText primary="Delete list" />
+      </MenuItem>
       </Menu>
     </div>
   );

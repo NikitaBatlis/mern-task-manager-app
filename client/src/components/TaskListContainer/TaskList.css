@@ -4,8 +4,8 @@
     position: relative;
     box-sizing: border-box;
     box-shadow: 0px 3px 6px #C2C2C2;
-    max-width: 30%;
-    min-width: 30%;
+    max-width: 35%;
+    min-width: 35%;
     min-height: 80%;
     background-color: white;
     border-radius: 15px;
@@ -78,8 +78,7 @@
     position: relative;
     font-size: 18px;
     position: relative;
-    width: 60%;
-    padding: 5px;
+    padding: 5px 10px;
     margin: 1em 0;
 }
 
@@ -129,4 +128,15 @@ hr {
     margin: -1px 0 0 -1px;
     font-size: 24px;
     stroke: #707070!important;
+}
+
+/***CREATE TASK MODAL***/
+
+.MuiBackdrop-root {
+    background-color: #6f83877a!important;
+}
+
+.MuiDialog-paperWidthSm {
+    min-width: 35%;
+    border-radius: 15px!important;
 }

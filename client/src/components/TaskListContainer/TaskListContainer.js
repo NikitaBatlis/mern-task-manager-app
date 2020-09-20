@@ -5,13 +5,13 @@ import './TaskList.css';
 import Col from 'react-bootstrap/Col';
 //Icon Import
 import { IconContext } from "react-icons";
-import { BsArrowUp } from 'react-icons/bs';
 import { FiPlus } from 'react-icons/fi';
 //Component Import
-import Task from '../Task/Task';
-import MoreMenu from './MoreMenu.js'
+import TaskTable from '../TaskTable/TaskTable';
+import MoreMenu from './MoreMenu.js';
+import CreateTask from './CreateTask.js';
 
-export default function TaskList() {
+export default function TaskListContainer() {
     return(
         <Col className="taskListContainer">
             <IconContext.Provider value={{ className: "icon" }}>
@@ -22,18 +22,11 @@ export default function TaskList() {
                     <MoreMenu/>
                 </div>
                 <hr />
-                <div className="taskListHeader">
-                    <p className="title1">Task Description</p>
-                    <p className="title2">Deadline<button><BsArrowUp/></button></p>           
-                </div>
-                <hr/>
 
-                <Task />
-                <Task />
-                <Task />
+                <TaskTable />
 
                 <div className="btnDiv">
-                    <button className="btns orangeButton"><FiPlus/> Create a Task</button>
+                    <CreateTask />
                 </div>
             </div>
 
