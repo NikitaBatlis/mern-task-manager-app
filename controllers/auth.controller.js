@@ -106,8 +106,8 @@ passport.use(new GoogleStrat({
 passport.use(new FacebookStrat({
         //options for stratergy
         callbackURL: 'http://localhost:3001/api/login/facebook/redirect',
-        clientID: '464138464544894',
-        clientSecret: '6345a4c36c2b3f3c31248c6fbe36ef49',
+        clientID: keys.facebook.clientID,
+        clientSecret: keys.facebook.clientID,
         profileFields: ['id', 'emails', 'displayName']
       },
     (accessToken, refreshToken, profile, done) => {
