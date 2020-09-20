@@ -1,8 +1,7 @@
 import React from 'react';
 //Material UI
-import { makeStyles } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProvider, makeStyles } from '@material-ui/styles';
 import { orange, blueGrey } from '@material-ui/core/colors';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -10,13 +9,12 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 //Others supporting imports
 import { FiPlus } from 'react-icons/fi';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
 
 const theme = createMuiTheme({
     palette: {
@@ -24,23 +22,28 @@ const theme = createMuiTheme({
         main: orange[200],
       },
       secondary: {
-        main: blueGrey[100],
+        main: blueGrey[400],
       },
     },
-  });
+});
 
 const useStyles = makeStyles((theme) => ({
-  margin: {
-    margin: theme.spacing(1),
-  },
-  extendedIcon: {
-    marginRight: theme.spacing(1),
+  formControl: {
+    minWidth: 180,
   },
 }));
 
 export default function CreateTask() {
 
   const classes = useStyles();
+
+  const [number, setPriority] = React.useState('');
+
+  const handleChange = (event) => {
+    setPriority(event.target.value);
+  };
+
+
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -50,13 +53,6 @@ export default function CreateTask() {
   const handleClose = () => {
     setOpen(false);
   };
-
-  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
 
   return (
     <div>
@@ -70,23 +66,24 @@ export default function CreateTask() {
         
         <DialogContent>
         <div>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="MM/dd/yyyy"
-                margin="normal"
-                id="date-picker-inline"
-                label="Select Deadline"
-                value={selectedDate}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                }}
-                />
-            </MuiPickersUtilsProvider>
+          <FormControl variant="outlined" className={classes.formControl}>
+          <InputLabel id="simple-select-outlined-label">Priority</InputLabel>
+          <Select
+            labelId="simple-select-outlined-label"
+            id="simple-select-outlined"
+            value={number}
+            onChange={handleChange}
+            label="Priority"
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value={1}>One</MenuItem>
+            <MenuItem value={2}>Two</MenuItem>
+            <MenuItem value={3}>Three</MenuItem>
+          </Select>
+          </FormControl>
         </div>
-
         <div>
             <TextField
             autoFocus
@@ -97,10 +94,10 @@ export default function CreateTask() {
             variant="outlined"
             fullWidth
             />
-`        </div>
-
+        </div>
         <div>
             <TextField
+            margin="dense"
             id="outlined-textarea"
             label="Notes"
             multiline
@@ -112,10 +109,10 @@ export default function CreateTask() {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleClose} color="primary" variant="outlines">
+          <Button onClick={handleClose} color="secondary" variant="text">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary" variant="outlines">
+          <Button onClick={handleClose} color="secondary" variant="text">
             Update
           </Button>
         </DialogActions>

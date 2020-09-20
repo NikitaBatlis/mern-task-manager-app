@@ -22,8 +22,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 //Components Import
-import TaskList from '../../components/TaskList/TaskList.js'
-
+import TaskListContainer from '../../components/TaskListContainer/TaskListContainer.js'
 
 const drawerWidth = 240;
 
@@ -85,6 +84,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function PersistentDrawerLeft() {
+
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -98,27 +98,24 @@ export default function PersistentDrawerLeft() {
   };
 
     return (
-        <div className="parentWrapper">
+      <div className="parentWrapper">
         <div className={classes.root}>
         <CssBaseline/>
-        
-            
-            <Container className="menuWrapper">
-                    <Row >
-                        <Col>
-                            <IconButton
-                                color="inherit"
-                                aria-label="open drawer"
-                                onClick={handleDrawerOpen}
-                                edge="start"
-                                className={clsx(classes.menuButton, open && classes.hide)}
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                        </Col>
-                    </Row>
-                </Container>
-            
+          <Container className="menuWrapper">
+                <Row >
+                    <Col>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={handleDrawerOpen}
+                            edge="start"
+                            className={clsx(classes.menuButton, open && classes.hide)}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                    </Col>
+                </Row>
+            </Container>
 
             <Drawer
                 className={classes.drawer}
@@ -148,22 +145,19 @@ export default function PersistentDrawerLeft() {
                 </div>
             </Drawer>
 
-
             <main
                 className={clsx(classes.content, {
                 [classes.contentShift]: open,
                 })}
                 >
                 <Container className="dashboardWrapper">
-
                     <Row className="dashboardHeader">
                             <Col><h1>Hi, John.</h1></Col>
                     </Row>
-
                     <Row className ="taskListWrapper">
-                        <TaskList />
-                        <TaskList />
-                        <TaskList />
+                        <TaskListContainer />
+                        <TaskListContainer />
+                        <TaskListContainer />
                         <IconContext.Provider value={{ className: "plusIcon" }}>
                             <Col className="addListCol">
                                 <button><FiPlus/></button>
@@ -173,7 +167,7 @@ export default function PersistentDrawerLeft() {
                 </Container>
             </main>
         </div>
-        </div>
+      </div>
     )
 }
 

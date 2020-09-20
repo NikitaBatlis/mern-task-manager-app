@@ -130,7 +130,11 @@ hr {
     stroke: #707070!important;
 }
 
-/***EDIT MODAL***/
+/***CREATE TASK MODAL***/
+
+.MuiBackdrop-root {
+    background-color: #6f83877a!important;
+}
 
 .MuiDialog-paperWidthSm {
     min-width: 35%;
