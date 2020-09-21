@@ -21,7 +21,7 @@ app.use(cookieSession({ maxAge: 24 * 60 *60 * 1000, keys: [keys.session.cookieKe
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://mern-task-manager-nikitabatlis.herokuapp.com/',
   credentials: true
 }));
 app.use(helmet());
