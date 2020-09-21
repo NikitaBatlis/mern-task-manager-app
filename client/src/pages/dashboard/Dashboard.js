@@ -110,7 +110,7 @@ export default function Dashboard() {
 
   //Get user data
   React.useEffect(() => {
-    axios.get(`http://localhost:3001/api/dashboard`, {
+    axios.get(`/api/dashboard`, {
       withCredentials: true
   }).then(res => {
     setUser(res.data);
@@ -122,7 +122,7 @@ export default function Dashboard() {
 
   //Logout user
   const handleLogout = () => {
-    axios.get(`http://localhost:3001/api/logout`, {
+    axios.get(`/api/logout`, {
       withCredentials: true
     }).then(() => history.push('/login'))
     .catch(err => console.log(err));
@@ -235,7 +235,7 @@ export default function Dashboard() {
   //Update User on DB
   function updateUser(updateItem) {
     axios({
-      url:'http://localhost:3001/api/dashboard/update',
+      url:'/api/dashboard/update',
       method:'PUT',
       data: updateItem
     }).then(res => {

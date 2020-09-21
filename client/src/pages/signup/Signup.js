@@ -31,7 +31,7 @@ export default function Signup() {
 
     //REGISTER CRUD
     const register = () => {
-        axios.post(`http://localhost:3001/api/signup`, {
+        axios.post(`/api/signup`, {
             username: registerUsername,
             email: registerEmail,
             password: registerPassword

@@ -33,7 +33,7 @@ export default function Login() {
     };
 
     const login = () => {
-        axios.post(`http://localhost:3001/api/login/local`, {
+        axios.post(`/api/login/local`, {
             username: loginEmail,
             password: loginPassword
         }, {
@@ -58,13 +58,13 @@ export default function Login() {
                 <input type="email" id="email" placeholder="Email" onChange={(e) => setLoginEmail(e.target.value)}></input> <br/>
                 <input type="password" id="password" placeholder="Password" onChange={(e) => setLoginPassword(e.target.value)}></input> <br/>
                 <button className="loginbtns orangeButton" onClick={login}>Login</button>
-                <a href="http://localhost:3000/signup"><p>Create an Account</p></a>
+                <a href="/signup"><p>Create an Account</p></a>
             </div>
             <div className="loginSubtext"><p>or</p></div>
             <IconContext.Provider value={{ className: 'react-icons' }}>
                 <div className="loginSocialBtns">
-                    <a href="http://localhost:3001/api/login/facebook"><button className="loginbtns facebookButton"><FaFacebook/>Continue with Facebook</button></a> <br/>
-                    <a href="http://localhost:3001/api/login/google"><button className="loginbtns googleButton"><FcGoogle/>Continue with Google</button></a>
+                    <a href="/api/login/facebook"><button className="loginbtns facebookButton"><FaFacebook/>Continue with Facebook</button></a> <br/>
+                    <a href="/api/login/google"><button className="loginbtns googleButton"><FcGoogle/>Continue with Google</button></a>
                 </div>
             </IconContext.Provider>
             <Snackbar
