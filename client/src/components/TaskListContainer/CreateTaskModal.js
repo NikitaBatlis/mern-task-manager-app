@@ -16,6 +16,7 @@ import Select from '@material-ui/core/Select';
 //Others supporting imports
 import { FiPlus } from 'react-icons/fi';
 
+//Material UI Styles
 const theme = createMuiTheme({
     palette: {
       primary: {
@@ -43,7 +44,7 @@ export default function CreateTask({ handleAddTask, taskListId }) {
     setPriority(event.target.value);
   };
 
-  //Handle Dialog Open close
+  //Handle Dialog Open/Close
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -74,7 +75,7 @@ export default function CreateTask({ handleAddTask, taskListId }) {
         
         <ThemeProvider theme={theme}>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Create a new Task</DialogTitle>
+        <DialogTitle id="form-dialog-title">Create a new task</DialogTitle>
         
         <DialogContent>
         <div>
@@ -100,7 +101,7 @@ export default function CreateTask({ handleAddTask, taskListId }) {
         <div>
             <TextField
             autoFocus
-            margin="dense"
+            margin="normal"
             id="taskDescription"
             label="Task description"
             type="text"
@@ -111,11 +112,11 @@ export default function CreateTask({ handleAddTask, taskListId }) {
         </div>
         <div>
             <TextField
-            margin="dense"
-            id="outlined-textarea"
+            margin="normal"
+            id="notes"
             label="Notes"
-            multiline
             variant="outlined"
+            multiline
             rows={4}
             fullWidth
             inputRef={notesField}

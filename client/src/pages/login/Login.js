@@ -5,13 +5,32 @@ import './Login.css';
 import { IconContext } from "react-icons";
 import { FaFacebook } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
 import axios from 'axios';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
 
 export default function Login() {
 
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const history = useHistory();
+
+    //SnackBar Error
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setOpen(false);
+    };
 
     const login = () => {
         axios.post(`http://localhost:3001/api/login/local`, {
@@ -23,9 +42,9 @@ export default function Login() {
             console.log(res);
             history.push('/dashboard');
         }).catch(err => {
-            // TODO display error message
+            // error message
             if (err.response != null && err.response.data != null && err.response.data.message != null) {
-                console.log(err.response.data.message);
+                handleOpen(true);
             }
             
         });
@@ -48,6 +67,13 @@ export default function Login() {
                     <a href="http://localhost:3001/api/login/google"><button className="loginbtns googleButton"><FcGoogle/>Continue with Google</button></a>
                 </div>
             </IconContext.Provider>
+            <Snackbar
+                open={open}
+                onClose={handleClose}
+            >
+                <Alert onClose={handleClose} severity="error">Unsuccessful login, please try again.</Alert>
+            </Snackbar>
+            
         </div>
       </div>
     )

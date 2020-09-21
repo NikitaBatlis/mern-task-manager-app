@@ -6,9 +6,9 @@ import Col from 'react-bootstrap/Col';
 //Component Import
 import TaskTable from '../TaskTable/TaskTable';
 import MoreMenu from './MoreMenu.js';
-import CreateTask from './CreateTask.js';
+import CreateTaskModal from './CreateTaskModal.js';
 
-export default function TaskListContainer({taskLists, handleAddTask, handleDeleteTaskListItem, handleDeleteTaskList}) {
+export default function TaskListContainer({taskLists, handleAddTask, handleDeleteTask, handleDeleteTaskList, handleEditList, handleEditTask}) {
     
     return(
         taskLists.map(taskList => (
@@ -16,13 +16,13 @@ export default function TaskListContainer({taskLists, handleAddTask, handleDelet
                 <div className="topTaskContainer">
                     <div className="taskListHeader">
                         <h2>{taskList.listName}</h2>
-                        <MoreMenu taskListId={taskList._id} handleDeleteTaskList={handleDeleteTaskList}/>
+                        <MoreMenu taskListId={taskList._id} taskListName={taskList.listName} handleDeleteTaskList={handleDeleteTaskList} handleEditList={handleEditList}/>
                     </div>
                     <hr />
-                    <TaskTable listItems={taskList.listItems} taskListId={taskList._id} handleDeleteTaskListItem={handleDeleteTaskListItem}/>
+                    <TaskTable listItems={taskList.listItems} taskListId={taskList._id} handleDeleteTask={handleDeleteTask} handleEditTask={handleEditTask}/>
                 </div>
                 <div className="btnDiv">
-                    <CreateTask handleAddTask={handleAddTask} taskListId={taskList._id} />
+                    <CreateTaskModal handleAddTask={handleAddTask} taskListId={taskList._id} />
                 </div>
             </Col>
         ))

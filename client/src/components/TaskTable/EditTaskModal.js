@@ -1,6 +1,5 @@
 import React from 'react';
 import './TaskTable.css';
-
 //Material UI
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider, makeStyles } from '@material-ui/styles';
@@ -29,18 +28,34 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    minWidth: 180,
+    minWidth: 200,
   },
 }));
 
-export default function EditButton({open, onClose}) {
+export default function EditTask({open, onClose, handleEditTask, task, taskListId}) {
 
   const classes = useStyles();
+  
+  //Priority Handle
   const [number, setPriority] = React.useState('');
-
   const handleChange = (event) => {
     setPriority(event.target.value);
   };
+
+  //Update Refs for Edit
+  const prioSelect  = React.useRef();
+  const taskField  = React.useRef();
+  const notesField  = React.useRef();
+  const onHandleEditTaskItem = () => {
+    handleEditTask({
+      taskListId: taskListId,
+      taskId: task._id,
+      priority: prioSelect.current.value,
+      task: taskField.current.value,
+      notes: notesField.current.value
+    })
+    onClose();
+  }
 
 
   return (
@@ -56,9 +71,10 @@ export default function EditButton({open, onClose}) {
           <Select
             labelId="simple-select-outlined-label"
             id="simple-select-outlined"
-            value={number}
+            defaultValue={task.priority}
             onChange={handleChange}
             label="Priority"
+            inputRef={prioSelect}
           >
             <MenuItem value="">
               <em>None</em>
@@ -72,23 +88,29 @@ export default function EditButton({open, onClose}) {
         <div>
             <TextField
             autoFocus
-            margin="dense"
+            margin="normal"
             id="name"
             label="Task description"
             type="text"
             variant="outlined"
             fullWidth
+            defaultValue={task.task}
+            inputRef={taskField}
+
             />
         </div>
         <div>
             <TextField
-            margin="dense"
+            margin="normal"
             id="outlined-textarea"
             label="Notes"
             multiline
             variant="outlined"
-            rows={4}
+            rows={5}
             fullWidth
+            defaultValue={task.notes}
+            inputRef={notesField}
+
             />
         </div>
         </DialogContent>
@@ -96,7 +118,7 @@ export default function EditButton({open, onClose}) {
           <Button onClick={onClose} color="secondary" variant="text">
             Cancel
           </Button>
-          <Button onClick={onClose} color="secondary" variant="text">
+          <Button onClick={onHandleEditTaskItem} color="secondary" variant="text">
             Update
           </Button>
         </DialogActions>

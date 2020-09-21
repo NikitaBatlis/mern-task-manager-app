@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import '../../App.css';
 import './Signup.css';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import axios from 'axios';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 export default function Signup() {
 
@@ -11,7 +17,19 @@ export default function Signup() {
     const [registerPassword, setRegisterPassword] = useState('');
     const history = useHistory();
 
+    //SnackBar Error
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
 
+    //REGISTER CRUD
     const register = () => {
         axios.post(`http://localhost:3001/api/signup`, {
             username: registerUsername,
@@ -21,7 +39,11 @@ export default function Signup() {
             withCredentials: true
         }).then(res => {
             history.push('/login');
-        });
+        }).catch(err => {
+            if (err.response != null && err.response.data != null && err.response.data.message != null) {
+                handleOpen(true);
+            }
+        })
     };
 
     return(
@@ -34,6 +56,13 @@ export default function Signup() {
                 <input type="password" id="password" placeholder="Password" onChange={(e) => setRegisterPassword(e.target.value)}></input> <br/>
                 <button className="signupbtns orangeButton" onClick={register}>Register</button>
             </div>
+            <Snackbar
+                open={open}
+                onClose={handleClose}
+            >
+                <Alert onClose={handleClose} severity="error">Unsuccessful register, please try again.</Alert>
+            </Snackbar>
+
         </div>
       </div>
     )

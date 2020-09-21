@@ -22,6 +22,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Tooltip from '@material-ui/core/Tooltip';
 //Components Import
 import TaskListContainer from '../../components/TaskListContainer/TaskListContainer.js'
 import axios from 'axios';
@@ -143,7 +144,7 @@ export default function Dashboard() {
   //ADD new task and UPDATE database
   function handleAddTaskListItem(taskData) {
     const newList = deepCopyTaskLists(user.taskLists);
-    const targetTaskList = newList.find(taskList => taskList.id === taskData.listId);
+    const targetTaskList = newList.find(taskList => taskList._id === taskData.taskListId);
     targetTaskList.listItems.push({
       task: taskData.task,
       priority: taskData.priority,
@@ -175,22 +176,37 @@ export default function Dashboard() {
       userId: user._id,
       taskLists: user.taskLists
     };
-    console.log(updateTaskList);
     updateUser(updateTaskList);
   }
 
-  //DELETE Task Item
-  function handleDeleteTaskListItem({taskListId, idList}) {
-    const newList = deepCopyTaskLists(user.taskLists);
-    const targetTaskList = newList.find(taskList => taskList._id === taskListId);
-    targetTaskList.listItems = targetTaskList.listItems.filter(listItem => !idList.some(id => id === listItem._id));
-    
+  //EDIT Task List
+  function handleEditList({taskListId, listName}) {
+    const newTaskList = deepCopyTaskLists(user.taskLists);
+    const targetTaskList = newTaskList.find(taskList => taskList._id === taskListId);
+    targetTaskList.listName = listName;
     const updateTaskList = {
       userId: user._id,
-      taskLists: newList
+      taskLists: newTaskList
     };
     updateUser(updateTaskList);
   }
+  
+  //EDIT Task Item
+  function handleEditTask({taskListId, taskId, priority, task, notes}) {
+    const newTaskList = deepCopyTaskLists(user.taskLists);
+    const targetTaskList = newTaskList.find(taskList => taskList._id === taskListId);
+    const targetListItem = targetTaskList.listItems.find(listItem => listItem._id === taskId);
+    targetListItem.task = task;
+    targetListItem.priority = priority;
+    targetListItem.notes = notes;
+
+    const updateTaskList = {
+      userId: user._id,
+      taskLists: newTaskList
+    };
+    updateUser(updateTaskList);
+  }
+
 
   //DELETE Task List
   function handleDeleteTaskList({taskListId}) {
@@ -203,6 +219,18 @@ export default function Dashboard() {
     updateUser(updateTaskList);
   }
 
+  //DELETE Task Item
+  function handleDeleteTask({taskListId, idList}) {
+    const newList = deepCopyTaskLists(user.taskLists);
+    const targetTaskList = newList.find(taskList => taskList._id === taskListId);
+    targetTaskList.listItems = targetTaskList.listItems.filter(listItem => !idList.some(id => id === listItem._id));
+    
+    const updateTaskList = {
+      userId: user._id,
+      taskLists: newList
+    };
+    updateUser(updateTaskList);
+  }
 
   //Update User on DB
   function updateUser(updateItem) {
@@ -211,7 +239,6 @@ export default function Dashboard() {
       method:'PUT',
       data: updateItem
     }).then(res => {
-      console.log(res.data);
       setUser(res.data);
     }).catch(err => console.log(err));
   }
@@ -256,7 +283,9 @@ export default function Dashboard() {
                 <List>
                 {['Account', 'Settings', 'Notifications'].map((text, index) => ( //
                     <ListItem button key={text}>
+                        <Tooltip title="Not Scripted">
                         <ListItemText primary={text} />
+                        </Tooltip>
                     </ListItem>
                 ))}
                 </List>
@@ -277,11 +306,13 @@ export default function Dashboard() {
                     </Row>
                     <Row className ="taskListWrapper">
 
-                        <TaskListContainer taskLists={user.taskLists} handleAddTask={handleAddTaskListItem} handleDeleteTaskListItem={handleDeleteTaskListItem} handleDeleteTaskList={handleDeleteTaskList}/>
+                        <TaskListContainer taskLists={user.taskLists} handleAddTask={handleAddTaskListItem} handleDeleteTask={handleDeleteTask} handleDeleteTaskList={handleDeleteTaskList} handleEditList={handleEditList} handleEditTask={handleEditTask}/>
                         
                         <IconContext.Provider value={{ className: "plusIcon" }}>
                             <Col className="addListCol">
+                                <Tooltip title="Add new list">
                                 <button onClick={handleAddTaskList}><FiPlus/></button>
+                                </Tooltip>
                             </Col>
                         </IconContext.Provider>
                     </Row>

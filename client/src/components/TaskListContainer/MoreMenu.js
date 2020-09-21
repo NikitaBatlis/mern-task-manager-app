@@ -7,11 +7,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+//Component Import
+import EditListModal from './EditListModal';
 
-
-export default function MoreMenu({handleDeleteTaskList, taskListId }) {
+export default function MoreMenu({handleDeleteTaskList, handleEditList, taskListId, taskListName }) {
   
-  //Menu Open/CLose Handle
+  //Menu Open/Close Handle
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -20,20 +22,30 @@ export default function MoreMenu({handleDeleteTaskList, taskListId }) {
     setAnchorEl(null);
   };
 
+  //Edit Modal Open/Close handle
+  const [openEditModal, setOpenEditModal] = React.useState(false);
+
+  const handleModalOpen = () => {
+    setOpenEditModal(true);
+  };
+
+  const handleModalClose = () => {
+    setOpenEditModal(false);
+  };
+
   //Delete Task List handle
-  const onhandleDeleteTaskList = () => {
+  const onHandleDeleteTaskList = () => {
     handleDeleteTaskList({
       taskListId: taskListId
     });
     handleClose();
   };
 
-
   return (
     <div>
         <IconButton
                 aria-label="more"
-                aria-controls="simplel-menu"
+                aria-controls="simple-menu"
                 aria-haspopup="true"
                 onClick={handleClick}
             >
@@ -46,13 +58,20 @@ export default function MoreMenu({handleDeleteTaskList, taskListId }) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-      <MenuItem onClick={onhandleDeleteTaskList}>
+      <MenuItem onClick={handleModalOpen} >
+        <ListItemIcon>
+          <EditIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText primary="Edit List" />
+      </MenuItem>
+      <MenuItem onClick={onHandleDeleteTaskList}>
         <ListItemIcon>
           <DeleteIcon fontSize="small" />
         </ListItemIcon>
         <ListItemText primary="Delete list" />
       </MenuItem>
       </Menu>
+      <EditListModal taskListId={taskListId} taskListName={taskListName} open={openEditModal} onClose={handleModalClose} handleEditList={handleEditList}/>
     </div>
   );
 }

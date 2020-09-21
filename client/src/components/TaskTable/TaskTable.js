@@ -22,8 +22,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 //Components Import
-import EditModal from './EditModal';
+import EditTaskModal from './EditTaskModal';
 
 const theme = createMuiTheme({
   palette: {
@@ -36,7 +37,7 @@ const theme = createMuiTheme({
   },
 });
 
-//SORT FUNCTIONS
+//SORT FUNCTIONS//////////////////////
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -63,9 +64,10 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-//TABLE HEADER
+//TABLE HEADER/////////////////////
 const headCells = [
   { id: 'task', numeric: false, disablePadding: true, label: 'Task Description' },
+  { id: 'action', numeric: false, disablePadding: true, label: ' ' },
   { id: 'priority', numeric: true, disablePadding: false, label: 'Priority' },
 ];
 
@@ -124,6 +126,7 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
+//TABLE TOOLBAR FOOTER ///////////
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: theme.spacing(2),
@@ -142,9 +145,10 @@ const useToolbarStyles = makeStyles((theme) => ({
   title: {
     flex: '1 1 100%',
   },
+
 }));
 
-//TABLE FOOTER TOOLBAR
+
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { numSelected, onDeleteClick } = props;
@@ -179,8 +183,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 
-
-//TABLE
+//TABLE ROWS /////////////////////
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -202,9 +205,10 @@ const useStyles = makeStyles((theme) => ({
     top: 20,
     width: 1,
   },
+
 }));
 
-export default function TaskTable({listItems, taskListId, handleDeleteTaskListItem}) {
+export default function TaskTable({listItems, taskListId, handleDeleteTask, handleEditTask}) {
 
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -212,6 +216,7 @@ export default function TaskTable({listItems, taskListId, handleDeleteTaskListIt
   const [openEditModal, setOpenEditModal] = React.useState(false);
   const [selected, setSelected] = React.useState([]);
   const [dense] = React.useState(false);
+  const [editTask, setEditTask] = React.useState([]);
 
   //Map out listItems into rows
   const rows = listItems.map(item => {
@@ -224,16 +229,14 @@ export default function TaskTable({listItems, taskListId, handleDeleteTaskListIt
     };
   });
 
-  const onDeleteClick = () => {
-    handleDeleteTaskListItem({taskListId: taskListId, idList: selected});
-  };
-
+  //Sorting arrows click
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
 
+  //All checkbox click
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelected = rows.map(row => row._id);
@@ -243,6 +246,7 @@ export default function TaskTable({listItems, taskListId, handleDeleteTaskListIt
     setSelected([]);
   };
 
+  //Checkbox click
   const handleClick = (event, _id) => {
     const selectedIndex = selected.indexOf(_id);
     let newSelected = [];
@@ -264,10 +268,19 @@ export default function TaskTable({listItems, taskListId, handleDeleteTaskListIt
 
   const isSelected = (task) => selected.indexOf(task) !== -1;
 
+  //Delete icon click
+  const onDeleteClick = () => {
+    handleDeleteTask({
+      taskListId: taskListId, 
+      idList: selected,
+    });
+    setSelected([]);
+  };
 
   //Create Task Modal handlers
-  const handleModalOpen = () => {
+  const handleModalOpen = (row) => {
     setOpenEditModal(true);
+    setEditTask(row);
   };
 
   const handleModalClose = () => {
@@ -296,39 +309,44 @@ export default function TaskTable({listItems, taskListId, handleDeleteTaskListIt
             />
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
-               .map((row, index) => {
-                  const isItemSelected = isSelected(row._id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row._id}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          onClick={(event) => handleClick(event, row._id)}
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
-                      </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none" onClick={handleModalOpen}>
-                        {row.task} 
-                      </TableCell>
-                      <TableCell align="right">{row.priority}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                .map((row, index) => {
+                    const isItemSelected = isSelected(row._id);
+                    const labelId = `enhanced-table-checkbox-${index}`;
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row._id}
+                        selected={isItemSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            onClick={(event) => handleClick(event, row._id)}
+                            checked={isItemSelected}
+                            inputProps={{ 'aria-labelledby': labelId }}
+                          />
+                        </TableCell>
+                        <TableCell component="th" id={labelId} scope="row" padding="none" >
+                          {row.task} 
+                        </TableCell>
+                        <Tooltip title="Edit task">
+                        <TableCell onClick={() => handleModalOpen(row)}>
+                          <EditIcon size='small' color='secondary' />
+                        </TableCell>
+                        </Tooltip>
+                        <TableCell align="right">
+                          {row.priority}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
             </TableBody>
           </Table>
         </TableContainer>
       <EnhancedTableToolbar numSelected={selected.length} onDeleteClick={onDeleteClick} />
-      <EditModal open={openEditModal} onClose={handleModalClose}/>
+      <EditTaskModal open={openEditModal} onClose={handleModalClose} handleEditTask={handleEditTask} task={editTask} taskListId={taskListId}/>
       </ThemeProvider>
     </div>
   );
