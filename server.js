@@ -72,4 +72,14 @@ app.use(function(err, req, res, next) {
   res.json(err.message);
 });
 
+//Change Express’ App.js file to call React build assets
+const path = require("path");
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
+
 module.exports = app;

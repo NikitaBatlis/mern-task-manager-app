@@ -37,7 +37,7 @@ export default function EditTask({open, onClose, handleEditTask, task, taskListI
   const classes = useStyles();
   
   //Priority Handle
-  const [number, setPriority] = React.useState('');
+  const [setPriority] = React.useState('');
   const handleChange = (event) => {
     setPriority(event.target.value);
   };
