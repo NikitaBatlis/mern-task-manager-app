@@ -1,6 +1,6 @@
 # MERN Task-Manager App
 
-A Task Manager app that was created using Create-React-App, React-Bootstrap, Axios and Router-DOM. Express server enpoints performing CRUD operations to a MongDB where user creditials and data is stored. Passport authentication with either local, Google or Facebook login is required to access the dashboard.
+A Task Manager app that was created using Create-React-App, React-Bootstrap, Material UI, Axios and Router-DOM. Express server endpoints performing CRUD operations to a MongDB where user credentials and data is stored. Passport authentication with either local, Google or Facebook login is required to access the dashboard.
 
 ### Prerequisite
 >#### SERVER:
