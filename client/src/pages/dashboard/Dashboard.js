@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 //Styles Import
 import '../../App.css';
 import './Dashboard.css';
@@ -23,6 +24,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 //Components Import
 import TaskListContainer from '../../components/TaskListContainer/TaskListContainer.js'
+import axios from 'axios';
+
 
 //STYLES
 const drawerWidth = 240;
@@ -86,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
 //FUNCTIONS
 export default function Dashboard() {
 
-  //UI FUNCTIONS
+  ////////////////////////UI FUNCTIONS///////////////////////
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -98,12 +101,124 @@ export default function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  ////////////////////// USER FUNCTIONS////////////////////////
+  const [user, setUser] = React.useState(null);
+  const [username, setUsername] = React.useState('');
+  const history = useHistory();
+
+  //Get user data
+  React.useEffect(() => {
+    axios.get(`http://localhost:3001/api/dashboard`, {
+      withCredentials: true
+  }).then(res => {
+    setUser(res.data);
+    setUsername(res.data.username);
+  }).catch(err => {
+    // window.location.replace('/login'); // Comment back into code when finished
+  });
+  }, []);
+
+  //Logout user
+  const handleLogout = () => {
+    axios.get(`http://localhost:3001/api/logout`, {
+      withCredentials: true
+    }).then(() => history.push('/login'))
+    .catch(err => console.log(err));
+  }
+
+  ///////////////////////CRUD FUNCTIONS////////////////////////////
+
+  function deepCopyTaskLists(taskLists) {
+    const newTaskLists = [];
+    taskLists.forEach(taskList => {
+      newTaskLists.push({
+          ...taskList,
+          listItems: taskList.listItems
+      });
+    });
+    return newTaskLists;
+  }
+
+  //ADD new task and UPDATE database
+  function handleAddTaskListItem(taskData) {
+    const newList = deepCopyTaskLists(user.taskLists);
+    const targetTaskList = newList.find(taskList => taskList.id === taskData.listId);
+    targetTaskList.listItems.push({
+      task: taskData.task,
+      priority: taskData.priority,
+      notes: taskData.notes,
+      completed: false
+    });
+    const updateTaskList = {
+      userId: user._id,
+      taskLists: user.taskLists
+    };
+    updateUser(updateTaskList);
+  }
+
+  //ADD new List and UPDATE database
+  function handleAddTaskList() {
+    const targetUser = user;
+    targetUser.taskLists.push({
+      listName: 'New Task List',
+      listItems: [
+        {
+          task: 'Example Task',
+          priority: 1,
+          notes: 'Extra information about the task',
+          completed: false
+        }
+      ]
+    });
+    const updateTaskList = {
+      userId: user._id,
+      taskLists: user.taskLists
+    };
+    console.log(updateTaskList);
+    updateUser(updateTaskList);
+  }
+
+  //DELETE Task Item
+  function handleDeleteTaskListItem({taskListId, idList}) {
+    const newList = deepCopyTaskLists(user.taskLists);
+    const targetTaskList = newList.find(taskList => taskList._id === taskListId);
+    targetTaskList.listItems = targetTaskList.listItems.filter(listItem => !idList.some(id => id === listItem._id));
+    
+    const updateTaskList = {
+      userId: user._id,
+      taskLists: newList
+    };
+    updateUser(updateTaskList);
+  }
+
+  //DELETE Task List
+  function handleDeleteTaskList({taskListId}) {
+    const newTaskLists = user.taskLists.filter(taskList => taskListId !== taskList._id);
+
+    const updateTaskList = {
+      userId: user._id,
+      taskLists: newTaskLists
+    };
+    updateUser(updateTaskList);
+  }
+
+
+  //Update User on DB
+  function updateUser(updateItem) {
+    axios({
+      url:'http://localhost:3001/api/dashboard/update',
+      method:'PUT',
+      data: updateItem
+    }).then(res => {
+      console.log(res.data);
+      setUser(res.data);
+    }).catch(err => console.log(err));
+  }
  
-  //CRUD FUNCTIONS
-
-
 
     return (
+      user ?
       <div className="parentWrapper">
         <div className={classes.root}>
         <CssBaseline/>
@@ -139,7 +254,7 @@ export default function Dashboard() {
                 </div>
                 <Divider />
                 <List>
-                {['Account', 'Settings', 'Notifications'].map((text, index) => (
+                {['Account', 'Settings', 'Notifications'].map((text, index) => ( //
                     <ListItem button key={text}>
                         <ListItemText primary={text} />
                     </ListItem>
@@ -147,7 +262,7 @@ export default function Dashboard() {
                 </List>
                 <Divider />
                 <div className="drawerBtn">
-                    <button className="orangeButton">Logout</button>
+                    <button className="orangeButton" onClick={handleLogout}>Logout</button>
                 </div>
             </Drawer>
 
@@ -158,22 +273,22 @@ export default function Dashboard() {
                 >
                 <Container className="dashboardWrapper">
                     <Row className="dashboardHeader">
-                            <Col><h1>Hi, John.</h1></Col>
+                            <Col><h1>Hi, {username}</h1></Col>
                     </Row>
                     <Row className ="taskListWrapper">
-                        <TaskListContainer />
-                        <TaskListContainer />
-                        <TaskListContainer />
+
+                        <TaskListContainer taskLists={user.taskLists} handleAddTask={handleAddTaskListItem} handleDeleteTaskListItem={handleDeleteTaskListItem} handleDeleteTaskList={handleDeleteTaskList}/>
+                        
                         <IconContext.Provider value={{ className: "plusIcon" }}>
                             <Col className="addListCol">
-                                <button><FiPlus/></button>
+                                <button onClick={handleAddTaskList}><FiPlus/></button>
                             </Col>
                         </IconContext.Provider>
                     </Row>
                 </Container>
             </main>
         </div>
-      </div>
+      </div> : null
     )
 }
 

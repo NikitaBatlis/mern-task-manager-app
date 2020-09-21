@@ -9,16 +9,25 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 
-export default function MoreMenu() {
+export default function MoreMenu({handleDeleteTaskList, taskListId }) {
+  
+  //Menu Open/CLose Handle
   const [anchorEl, setAnchorEl] = React.useState(null);
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  //Delete Task List handle
+  const onhandleDeleteTaskList = () => {
+    handleDeleteTaskList({
+      taskListId: taskListId
+    });
+    handleClose();
+  };
+
 
   return (
     <div>
@@ -37,7 +46,7 @@ export default function MoreMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-      <MenuItem onClick={handleClose}>
+      <MenuItem onClick={onhandleDeleteTaskList}>
         <ListItemIcon>
           <DeleteIcon fontSize="small" />
         </ListItemIcon>

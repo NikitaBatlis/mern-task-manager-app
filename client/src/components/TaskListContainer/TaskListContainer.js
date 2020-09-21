@@ -3,41 +3,28 @@ import React from 'react';
 import '../../App.css';
 import './TaskList.css';
 import Col from 'react-bootstrap/Col';
-//Icon Import
-import { IconContext } from "react-icons";
-import { FiPlus } from 'react-icons/fi';
 //Component Import
 import TaskTable from '../TaskTable/TaskTable';
 import MoreMenu from './MoreMenu.js';
 import CreateTask from './CreateTask.js';
 
-export default function TaskListContainer() {
+export default function TaskListContainer({taskLists, handleAddTask, handleDeleteTaskListItem, handleDeleteTaskList}) {
+    
     return(
-        <Col className="taskListContainer">
-            <IconContext.Provider value={{ className: "icon" }}>
-
-            <div className="taskListFlex">
-                <div className="taskListHeader">
-                    <h2>List Name</h2>
-                    <MoreMenu/>
+        taskLists.map(taskList => (
+            <Col className="taskListContainer" key={taskList._id}>
+                <div className="topTaskContainer">
+                    <div className="taskListHeader">
+                        <h2>{taskList.listName}</h2>
+                        <MoreMenu taskListId={taskList._id} handleDeleteTaskList={handleDeleteTaskList}/>
+                    </div>
+                    <hr />
+                    <TaskTable listItems={taskList.listItems} taskListId={taskList._id} handleDeleteTaskListItem={handleDeleteTaskListItem}/>
                 </div>
-                <hr />
-
-                <TaskTable />
-
                 <div className="btnDiv">
-                    <CreateTask />
+                    <CreateTask handleAddTask={handleAddTask} taskListId={taskList._id} />
                 </div>
-            </div>
-
-            <div className="formDiv">
-                <form>
-                    <input type="text" id="quickAdd" placeholder="Quickly add a task"></input>
-                    <button><FiPlus/></button>
-                </form>
-            </div>
-
-            </IconContext.Provider>
-        </Col>
+            </Col>
+        ))
     )
 }

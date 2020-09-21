@@ -10,10 +10,10 @@ import Dashboard from './pages/dashboard/Dashboard.js';
 
 export default function App() {
   useEffect(() => {
-    checkFacebookKek();
+    checkFacebook();
   }, []);
 
-  function checkFacebookKek() {
+  function checkFacebook() {
     if (window.location.hash && window.location.hash === '#_=_') {
       window.location.replace(window.location.href.split('%')[0]);
     }

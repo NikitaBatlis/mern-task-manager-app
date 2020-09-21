@@ -20,7 +20,7 @@ passport.deserializeUser((id, cb) => {
                     id: user._id,
                     username: user.username,
                     email: user.email,
-                    todos: user.todos
+                    taskLists: user.taskLists
                 };
             }
             cb(err, clientUser);
@@ -36,7 +36,7 @@ const authCheck = ((req, res, next) => {
       //if user not logged in
       res.redirect('http://localhost:3000/login');
     } else {
-        res.send(req.user);
+        next();
     }
   });
 
@@ -52,7 +52,20 @@ const registerUser = (req, res) => {
                 username: username,
                 email: email,
                 password: hashedPassword,
-                type: 'LOCAL'
+                type: 'LOCAL',
+                taskLists: [
+                    {
+                        listName: 'Task List',
+                        listItems: [
+                            {
+                                task: 'Example Task',
+                                priority: 1,
+                                notes: 'Extra information about the task',
+                                completed: false
+                            }
+                        ]
+                    }
+                ]
             });
             await newUser.save();
             res.send('User Created');
@@ -93,7 +106,22 @@ passport.use(new GoogleStrat({
                 new User({
                     username: profile.displayName,
                     email: profile._json.email,
-                    type: 'GOOGLE'
+                    type: 'GOOGLE',
+                    taskLists: [
+                        {
+                            listName: 'Task List',
+                            listItems: [
+                                {
+                                    task: 'Example Task',
+                                    priority: 1,
+                                    notes: 'Extra information about the task',
+                                    completed: false
+                                }
+    
+                            ]
+                        }
+                    ]
+    
                 }).save().then((user) => {
                     done(null, user);
                 }).catch(err => done(err, false));
@@ -121,7 +149,22 @@ passport.use(new FacebookStrat({
                 const userData = { 
                     username: name, 
                     email: email,
-                    type: 'FACEBOOK'
+                    type: 'FACEBOOK',
+                    taskLists: [
+                        {
+                            listName: 'Task List',
+                            listItems: [
+                                {
+                                    task: 'Example Task',
+                                    priority: 1,
+                                    notes: 'Extra information about the task',
+                                    completed: false
+                                }
+    
+                            ]
+                        }
+                    ]
+    
                 };
                 new User(userData).save().then((user) => {
                     done(null, user); 

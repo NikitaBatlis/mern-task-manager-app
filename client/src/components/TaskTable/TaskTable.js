@@ -36,18 +36,7 @@ const theme = createMuiTheme({
   },
 });
 
-function createData(task, priority) {
-  return {task, priority};
-}
-
-const rows = [
-  createData('ATask Item', 1),
-  createData('BTask Item', 2),
-  createData('CTask Item', 3),
-  createData('DTask Item', 3),
-
-];
-
+//SORT FUNCTIONS
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -74,6 +63,7 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+//TABLE HEADER
 const headCells = [
   { id: 'task', numeric: false, disablePadding: true, label: 'Task Description' },
   { id: 'priority', numeric: true, disablePadding: false, label: 'Priority' },
@@ -154,9 +144,10 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
+//TABLE FOOTER TOOLBAR
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected } = props;
+  const { numSelected, onDeleteClick } = props;
 
   return (
     <ThemeProvider theme={theme}>
@@ -173,7 +164,7 @@ const EnhancedTableToolbar = (props) => {
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton aria-label="delete">
+          <IconButton aria-label="delete" onClick={onDeleteClick}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -187,9 +178,15 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
+
+
+//TABLE
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
+  },
+  container: {
+    maxHeight: 600,
   },
   table: {
     minWidth: 35,
@@ -207,15 +204,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable() {
+export default function TaskTable({listItems, taskListId, handleDeleteTaskListItem}) {
+
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('priority');
   const [openEditModal, setOpenEditModal] = React.useState(false);
   const [selected, setSelected] = React.useState([]);
-  const [page] = React.useState(0);
   const [dense] = React.useState(false);
-  const [rowsPerPage] = React.useState(5);
+
+  //Map out listItems into rows
+  const rows = listItems.map(item => {
+    return {
+      _id: item._id,
+      task: item.task,
+      priority: item.priority,
+      notes: item.notes,
+      completed: item.completed
+    };
+  });
+
+  const onDeleteClick = () => {
+    handleDeleteTaskListItem({taskListId: taskListId, idList: selected});
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -225,19 +236,19 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.task);
-      setSelected(newSelecteds);
+      const newSelected = rows.map(row => row._id);
+      setSelected(newSelected);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, task) => {
-    const selectedIndex = selected.indexOf(task);
+  const handleClick = (event, _id) => {
+    const selectedIndex = selected.indexOf(_id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, task);
+      newSelected = newSelected.concat(selected, _id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -248,10 +259,13 @@ export default function EnhancedTable() {
         selected.slice(selectedIndex + 1),
       );
     }
-
     setSelected(newSelected);
   };
 
+  const isSelected = (task) => selected.indexOf(task) !== -1;
+
+
+  //Create Task Modal handlers
   const handleModalOpen = () => {
     setOpenEditModal(true);
   };
@@ -260,12 +274,11 @@ export default function EnhancedTable() {
     setOpenEditModal(false);
   };
 
-  const isSelected = (task) => selected.indexOf(task) !== -1;
 
   return (
     <div className={classes.root}>
       <ThemeProvider theme={theme}>
-        <TableContainer>
+        <TableContainer className={classes.container}>
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
@@ -283,9 +296,8 @@ export default function EnhancedTable() {
             />
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.task);
+               .map((row, index) => {
+                  const isItemSelected = isSelected(row._id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -294,12 +306,12 @@ export default function EnhancedTable() {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.task}
+                      key={row._id}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
-                          onClick={(event) => handleClick(event, row.task)}
+                          onClick={(event) => handleClick(event, row._id)}
                           checked={isItemSelected}
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
@@ -315,8 +327,7 @@ export default function EnhancedTable() {
             </TableBody>
           </Table>
         </TableContainer>
-      <EnhancedTableToolbar numSelected={selected.length} />
-
+      <EnhancedTableToolbar numSelected={selected.length} onDeleteClick={onDeleteClick} />
       <EditModal open={openEditModal} onClose={handleModalClose}/>
       </ThemeProvider>
     </div>

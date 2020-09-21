@@ -4,13 +4,16 @@
     position: relative;
     box-sizing: border-box;
     box-shadow: 0px 3px 6px #C2C2C2;
-    max-width: 35%;
     min-width: 35%;
     min-height: 80%;
     background-color: white;
     border-radius: 15px;
     padding: 1.5rem;
     margin: 10px;    
+}
+
+.topTaskContainer {
+    flex: 1;
 }
 
 @media screen and (max-width: 999px) and (min-width: 600px) {
@@ -70,64 +73,21 @@
 
 .taskListContainer .btnDiv {
     position: relative;
+    flex: 0 1;
     display: flex;
     justify-content: center;
 }
 
-.taskListContainer .btns {
-    position: relative;
-    font-size: 18px;
-    position: relative;
-    padding: 5px 10px;
-    margin: 1em 0;
+.btnDiv button {
+    padding: 8px 20px;
+    font-size: 16px; 
 }
+
+
 
 hr {
     border-bottom: solid 1px #C2C2C2;
     margin: 0.5rem 0 0.5rem 0;
-}
-
-
-/*Form Div*/
-.formDiv form {
-    width: 100%;
-}
-
-.formDiv input {
-    display: inline-flex;
-    box-sizing: border-box;
-    border-radius: 25px;
-    width: 80%;
-    border: solid 1px #C2C2C2;
-    padding: 10px 10px;
-    margin: 10px 0;
-    font-size: 16px;
-}
-
-.formDiv :focus {
-    outline: none;
-}
-
-.formDiv button {
-    background-color: transparent;
-    text-decoration: none;
-    border: solid 1px #C2C2C2;
-    height: 42px;
-    width: 42px;
-    border-radius: 25px;
-    padding: 0;
-    margin: 0 0 0 5px;
-    cursor: pointer;
-}
-
-.formDiv button:focus {
-    border: solid 2px #a7a7a7;
-}
-
-.formDiv .icon {
-    margin: -1px 0 0 -1px;
-    font-size: 24px;
-    stroke: #707070!important;
 }
 
 /***CREATE TASK MODAL***/

@@ -21,10 +21,31 @@ const UserSchema = mongoose.Schema({
     password: {
         type: String,
     },
-    todos: [{
-        type: Schema.Types.ObjectId,
-        ref: 'tasks'
-    }]
+    taskLists: [
+        {
+            listName: {
+                type: String,
+                required: true
+            },
+            listItems: [
+                {
+                    task: {
+                        type: String,
+                        min: 1
+                    },
+                    priority: {
+                        type: Number,
+                        required: false
+                    },
+                    notes: {
+                        type: String,
+                        required: false        
+                    },
+                    completed: false
+                }, { timestamps: true },
+            ]
+        }
+    ]
 }, { timestamps: true });
 
 UserSchema.index({email: 1, type: 1}, {unique: true});

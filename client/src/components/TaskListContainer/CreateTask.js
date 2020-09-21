@@ -33,25 +33,37 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CreateTask() {
+export default function CreateTask({ handleAddTask, taskListId }) {
 
   const classes = useStyles();
 
+  //Select Priority
   const [number, setPriority] = React.useState('');
-
   const handleChange = (event) => {
     setPriority(event.target.value);
   };
 
-
+  //Handle Dialog Open close
   const [open, setOpen] = React.useState(false);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
+  };
+
+  //Update Refs
+  const prioSelect  = React.useRef();
+  const taskField  = React.useRef();
+  const notesField  = React.useRef();
+  const onHandleAddTask = () => {
+    handleAddTask({
+      taskListId: taskListId,
+      priority: prioSelect.current.value,
+      task: taskField.current.value,
+      notes: notesField.current.value
+    });
+    handleClose();
   };
 
   return (
@@ -67,13 +79,14 @@ export default function CreateTask() {
         <DialogContent>
         <div>
           <FormControl variant="outlined" className={classes.formControl}>
-          <InputLabel id="simple-select-outlined-label">Priority</InputLabel>
+          <InputLabel id="prioity">Priority</InputLabel>
           <Select
-            labelId="simple-select-outlined-label"
-            id="simple-select-outlined"
+            labelId="priority"
+            id="priority"
             value={number}
             onChange={handleChange}
             label="Priority"
+            inputRef={prioSelect}
           >
             <MenuItem value="">
               <em>None</em>
@@ -88,11 +101,12 @@ export default function CreateTask() {
             <TextField
             autoFocus
             margin="dense"
-            id="name"
+            id="taskDescription"
             label="Task description"
             type="text"
             variant="outlined"
             fullWidth
+            inputRef={taskField}
             />
         </div>
         <div>
@@ -104,6 +118,7 @@ export default function CreateTask() {
             variant="outlined"
             rows={4}
             fullWidth
+            inputRef={notesField}
             />
         </div>
         </DialogContent>
@@ -112,8 +127,8 @@ export default function CreateTask() {
           <Button onClick={handleClose} color="secondary" variant="text">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="secondary" variant="text">
-            Update
+          <Button onClick={onHandleAddTask} color="secondary" variant="text">
+            Add
           </Button>
         </DialogActions>
       </Dialog>
