@@ -92,7 +92,7 @@ passport.use(new LocalStrat((username, password, done) => {
 //GOOGLE STRATEGY -- working
 passport.use(new GoogleStrat({
         //options for stratergy
-        callbackURL: '/api/login/google/redirect',
+        callbackURL: 'https://mern-task-manager-nikitabatlis.herokuapp.com/api/login/google/redirect',
         clientID: keys.google.clientID,
         clientSecret: keys.google.clientSecret
     }, 
@@ -133,7 +133,7 @@ passport.use(new GoogleStrat({
 //FACEBOOK STRATEGY -- working
 passport.use(new FacebookStrat({
         //options for stratergy
-        callbackURL: '/api/login/facebook/redirect',
+        callbackURL: 'https://mern-task-manager-nikitabatlis.herokuapp.com/api/login/facebook/redirect',
         clientID: keys.facebook.appID,
         clientSecret: keys.facebook.appSecret,
         profileFields: ['id', 'emails', 'displayName']
