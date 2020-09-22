@@ -16,8 +16,6 @@ export default function App(props) {
       window.location.replace(window.location.href.split('%')[0]);
     }
   }
-  
-  console.log(props);
 
   return (
     <div>
