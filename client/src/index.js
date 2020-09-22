@@ -17,10 +17,10 @@ ReactDOM.render(
     <BrowserRouter>
       <Route path="/" component={App}>
         <Switch>
-          <Route exact component={Welcome} />
-          <Route path="login" exact component={Login} />
-          <Route path="signup" exact component={Signup} />
-          <Route path="dashboard" exact component={Dashboard} />
+          <Route path="/" exact component={Welcome} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/signup" exact component={Signup} />
+          <Route path="/dashboard" exact component={Dashboard} />
         </Switch>
       </Route>
     </BrowserRouter>
