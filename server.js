@@ -21,7 +21,6 @@ app.use(cookieSession({ maxAge: 24 * 60 *60 * 1000, keys: [keys.session.cookieKe
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors({
-  origin: 'https://mern-task-manager-nikitabatlis.herokuapp.com/',
   credentials: true
 }));
 app.use(helmet());
@@ -55,7 +54,7 @@ mongoose.connect(keys.mongoDB.dbURI, {
 .catch(err => console.log('>>> Database connection error<<<<', err))
 
 // CATCH 404 and forward to error handler
-app.use(function(req, res, next) {
+/* app.use(function(req, res, next) {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -70,10 +69,10 @@ app.use(function(err, req, res, next) {
   // error page
   res.status(err.status || 500);
   res.json(err.message);
-});
+}); */
 
 //Change Express’ App.js file to call React build assets
-const path = require("path");
+// const path = require("path");
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 
@@ -82,4 +81,4 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-module.exports = app;
+// module.exports = app;
