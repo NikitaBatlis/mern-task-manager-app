@@ -34,7 +34,7 @@ passport.deserializeUser((id, cb) => {
 const authCheck = ((req, res, next) => {
     if (!req.user) {
       //if user not logged in
-      res.redirect('http://localhost:3000/login');
+      res.redirect('/login');
     } else {
         next();
     }
@@ -133,7 +133,7 @@ passport.use(new GoogleStrat({
 //FACEBOOK STRATEGY -- working
 passport.use(new FacebookStrat({
         //options for stratergy
-        callbackURL: 'http://localhost:3001/api/login/facebook/redirect',
+        callbackURL: '/api/login/facebook/redirect',
         clientID: keys.facebook.appID,
         clientSecret: keys.facebook.appSecret,
         profileFields: ['id', 'emails', 'displayName']
