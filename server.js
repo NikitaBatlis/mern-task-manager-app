@@ -54,11 +54,18 @@ mongoose.connect(keys.mongoDB.dbURI, {
 .catch(err => console.log('>>> Database connection error<<<<', err))
 
 //Change Express’ App.js file to call React build assets
+const path = require('path');
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 
+  let url = path.join(__dirname, '../client/build', 'index.html');
+  if (!url.startsWith('/app/')) {
+    url = url.substring(1);
+  } // since we're on local windows
+    
+
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+    res.sendFile(url);
   });
 }
 
