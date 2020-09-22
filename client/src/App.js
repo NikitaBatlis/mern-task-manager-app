@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Switch, Route} from "react-router-dom";
 //Imports styles
 import './App.css';
 //Import Pages
-import Welcome from './pages/welcome/Welcome.js';
-import Login from './pages/login/Login.js';
-import Signup from './pages/signup/Signup.js';
-import Dashboard from './pages/dashboard/Dashboard.js';
 
-export default function App() {
+export default function App(props) {
+  const { children } = props
+  
+
   useEffect(() => {
     checkFacebook();
   }, []);
@@ -18,17 +16,12 @@ export default function App() {
       window.location.replace(window.location.href.split('%')[0]);
     }
   }
+  
+  console.log(props);
 
   return (
-    <div className= "routerWrapper">
-      <BrowserRouter>
-          <Switch>
-            <Route path="/" exact component={Welcome}/>
-            <Route path="/login" exact component={Login}/>
-            <Route path="/signup" exact component={Signup}/>
-            <Route path="/dashboard" exact component={Dashboard}/>
-          </Switch>
-      </BrowserRouter>
+    <div>
+      {children}
     </div>
-  );
+  )
 }
