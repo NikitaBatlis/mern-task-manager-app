@@ -54,7 +54,7 @@ mongoose.connect(keys.mongoDB.dbURI, {
 .catch(err => console.log('>>> Database connection error<<<<', err))
 
 //Change Express’ App.js file to call React build assets
-const path = require('path');
+const path = require("path");
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 
@@ -80,3 +80,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.json(err.message);
 });
+
+
+
