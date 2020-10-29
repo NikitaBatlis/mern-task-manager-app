@@ -21,10 +21,10 @@ router.get('/login/google',
 	passport.authenticate('google', {scope: ['profile', 'email']}));
 
 router.get('/login/google/redirect', 
-	passport.authenticate('google', { failureRedirect: 'https://mern-task-manager-nikitabatlis.herokuapp.com/login' }), 
+	passport.authenticate('google', { failureRedirect: 'https://mern-task-manager-nikitabatlis.herokuapp.com/login' }),  //replace with 'http://localhost:3000/login' in development.
 	(req, res) => {
 		// Successful authentication, redirect home.
-		res.redirect(`https://mern-task-manager-nikitabatlis.herokuapp.com/dashboard`);
+		res.redirect(`https://mern-task-manager-nikitabatlis.herokuapp.com/dashboard`); //replace with 'http://localhost:3000/dashboard' in development.
 });
 
 //Facebook authentication route
@@ -32,10 +32,10 @@ router.get('/login/facebook',
   passport.authenticate('facebook', {scope: ['email']}));
 
 router.get('/login/facebook/redirect',
-  passport.authenticate('facebook', { failureRedirect: 'https://mern-task-manager-nikitabatlis.herokuapp.com/login' }),
+  passport.authenticate('facebook', { failureRedirect: 'https://mern-task-manager-nikitabatlis.herokuapp.com/login' }), //replace with 'http://localhost:3000/login' in development.
   (req, res) => {
     // Successful authentication, redirect home.
-	res.redirect(`https://mern-task-manager-nikitabatlis.herokuapp.com/dashboard`);
+	res.redirect(`https://mern-task-manager-nikitabatlis.herokuapp.com/dashboard`); //replace with 'http://localhost:3000/dashboard' in development.
 });
 
 
