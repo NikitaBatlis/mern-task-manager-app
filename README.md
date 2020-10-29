@@ -6,9 +6,9 @@ Deployed:
 https://mern-task-manager-nikitabatlis.herokuapp.com/
 
 #### NB NOTE: 
-Please use either a Google or Local account to login on the Heroku deployment. Facebook login only works in development.
-The Heroku app origin URL is hardcoded into this source code. Replace the 'https://mern-task-manager-nikitabatlis.herokuapp.com/' with either 'http://localhost:3000' to get the app working in development.
-The reason I have hardcoded the origins this way was so I could get the Express server and Create-React-App client to work off the same heroku server.
+⋅⋅*  Please use either a Google or Local account to login on the Heroku deployment. Facebook login only works in development.
+⋅⋅*  The Heroku app origin URL is hardcoded into this source code. Replace the `https://mern-task-manager-nikitabatlis.herokuapp.com/` with either `http://localhost:3000` to get the app working in development.
+⋅⋅*  The reason I have hardcoded the origins this way was so I could get the Express server and Create-React-App client to work off the same heroku server.
 
 
 ### Prerequisite
@@ -52,7 +52,7 @@ http://localhost:3001/api/login/google/redirect
 To be able to run this file:
 1. Copy it to your local machine.
 2. Create keys.js and replace the values there with your MongoDB, Facebook and Google app credentials.
-3. Replace the heroku-app URL in `routes/login.route.js` file with the 'http://localhost:3000' like the comments tell you.
+3. Replace the heroku-app URL in `routes/login.route.js` file with the `http://localhost:3000` like the comments tell you.
 4. The follow CLI instructions below.
 
 ```
